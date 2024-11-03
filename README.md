@@ -1,0 +1,119 @@
+Sistema de Gestión de Restaurante
+
+Este proyecto implementa un sistema de gestión de restaurante distribuido en dos microservicios. Cada microservicio es responsable de una función específica: gestión de pedidos e inventario.
+
+    API de Pedidos (Puerto 8000): Maneja los pedidos realizados por los clientes.
+    API de Inventario (Puerto 8001): Administra el inventario de productos disponibles.
+
+Requisitos
+
+    Docker
+    Docker Compose
+
+Instalación y Ejecución
+
+    Clonar el repositorio:
+
+    bash
+
+git clone https://github.com/tu_usuario/nombre_del_repositorio.git
+cd nombre_del_repositorio
+
+Levantar los contenedores:
+
+bash
+
+    docker-compose up --build
+
+    Este comando construirá y levantará los contenedores necesarios para ejecutar los microservicios.
+
+Documentación de APIs
+
+Cada microservicio tiene su propia API documentada con Swagger para una interacción más sencilla y para facilitar las pruebas.
+API de Pedidos
+
+    URL Base: http://localhost:8000
+    Documentación Swagger: http://localhost:8000/docs
+
+Endpoints Disponibles:
+
+    POST /pedidos/: Crea un nuevo pedido, verifica el inventario disponible y actualiza automáticamente el stock.
+    GET /pedidos/{pedido_id}: Obtiene los detalles de un pedido específico.
+    PUT /pedidos/{pedido_id}/estado: Actualiza el estado de un pedido. Los estados disponibles incluyen:
+        pendiente
+        en_preparacion
+        completado
+        cancelado
+
+API de Inventario
+
+    URL Base: http://localhost:8001
+    Documentación Swagger: http://localhost:8001/docs
+
+Endpoints Disponibles:
+
+    GET /productos/: Lista todos los productos disponibles en el inventario.
+    GET /productos/{producto_id}: Obtiene los detalles de un producto específico.
+    POST /productos/{producto_id}/reducir: Reduce el stock de un producto en función de la cantidad indicada.
+
+Ejemplos de Uso
+
+A continuación, se muestran ejemplos de uso para cada endpoint principal:
+
+    Crear un nuevo pedido:
+
+    bash
+
+curl -X POST http://localhost:8000/pedidos/ \
+-H "Content-Type: application/json" \
+-d '{
+      "items": [
+        {
+          "producto_id": 1,
+          "cantidad": 2,
+          "notas": "Sin cebolla"
+        }
+      ],
+      "mesa": 5
+    }'
+
+Consultar el inventario:
+
+bash
+
+curl http://localhost:8001/productos/
+
+Actualizar estado de un pedido:
+
+bash
+
+    curl -X PUT http://localhost:8000/pedidos/1/estado \
+    -H "Content-Type: application/json" \
+    -d '"en_preparacion"'
+
+Estructura del Proyecto
+
+La estructura del proyecto es la siguiente:
+
+plaintext
+
+Microservices/
+├── pedidos_api/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── app.py
+├── inventario_api/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── app.py
+├── docker-compose.yml
+└── README.md
+
+Cada microservicio tiene su propio directorio, que contiene un archivo Dockerfile, un archivo requirements.txt con las dependencias y el archivo principal app.py para la ejecución del servicio.
+Detener los Servicios
+
+Para detener y eliminar los contenedores, usa el siguiente comando:
+
+bash
+
+docker-compose down
