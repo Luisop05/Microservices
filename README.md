@@ -15,13 +15,13 @@ Este proyecto implementa un sistema de gestión de restaurante distribuido en do
 1. **Clonar el repositorio:**
 
    ```bash
-   git clone https://github.com/tu_usuario/nombre_del_repositorio.git
+   git clone https://github.com/Luisop05/Microservices.git
    cd nombre_del_repositorio
 
 2. **Levantar los contenedores:**
 
     ```bash
-    docker-compose up --build
+    docker-compose up 
 
 Este comando construirá y levantará los contenedores necesarios para ejecutar los microservicios.
 
