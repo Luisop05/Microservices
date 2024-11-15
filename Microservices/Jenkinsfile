@@ -1,18 +1,27 @@
 pipeline {
     agent any
-
     stages {
-    stage('Build') {
-        steps {
-            sh 'docker-compose build'
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/Luisop05/Microservices.git'
+            }
         }
-    }
-    
-    stage('Deploy') {
-        steps {
-            sh 'docker-compose up -d'
+        stage('Build') {
+            steps {
+                sh 'docker-compose build'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'docker-compose run --rm pedidos-api pytest'
+                sh 'docker-compose run --rm inventario-api pytest'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh 'kubectl apply -f deployments/pedidos-deployment.yaml'
+                sh 'kubectl apply -f deployments/inventario-deployment.yaml'
+            }
         }
     }
 }
-}
-    
