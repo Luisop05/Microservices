@@ -4,6 +4,31 @@ Este proyecto implementa un sistema de gestión de restaurante distribuido en do
 
 - **API de Pedidos** (Puerto 8000): Maneja los pedidos realizados por los clientes.
 - **API de Inventario** (Puerto 8001): Administra el inventario de productos disponibles.
+## Estructura del Proyecto
+
+La estructura del proyecto es la siguiente:
+
+```plaintext
+Microservices/
+├── pedidos_api/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── app.py
+├── inventario_api/
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── app.py
+├── docker-compose.yml
+└── README.md
+
+Comunicación entre servicios:
+## Cuando se crea un pedido:
+1. La api de pedidos consulta el inventario
+2. Verifica la disponibilidad
+3. Reduce el stock
+4. Calcula el total basado en precios de inventario
+
+## La comunicación se realiza a través de la red Docker restaurant-net
 
 ## Requisitos
 
@@ -21,7 +46,7 @@ Este proyecto implementa un sistema de gestión de restaurante distribuido en do
 2. **Levantar los contenedores:**
 
     ```bash
-    docker-compose up 
+    docker-compose up --build
 
 Este comando construirá y levantará los contenedores necesarios para ejecutar los microservicios.
 
@@ -109,19 +134,3 @@ A continuación, se muestran ejemplos de uso para cada endpoint principal:
    ```bash
    docker-compose down
 
-## Estructura del Proyecto
-
-La estructura del proyecto es la siguiente:
-
-```plaintext
-Microservices/
-├── pedidos_api/
-│   ├── Dockerfile
-│   ├── requirements.txt
-│   └── app.py
-├── inventario_api/
-│   ├── Dockerfile
-│   ├── requirements.txt
-│   └── app.py
-├── docker-compose.yml
-└── README.md
