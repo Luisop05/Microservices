@@ -4,8 +4,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                // Cambiar al directorio del proyecto de microservicios
-                dir('Microservices') {
+                 
                     sh 'docker-compose build'
                 }
             }
@@ -13,11 +12,9 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                // Cambiar al directorio del proyecto de microservicios
-                dir('Microservices') {
+                
                     sh 'docker-compose up -d'
                 }
             }
         }
-    }
-}
+    
