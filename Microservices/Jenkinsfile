@@ -4,13 +4,14 @@ pipeline {
     environment {
         // Define environment variables if necessary
         DOCKER_COMPOSE_FILE = 'docker-compose.yml'
+        BRANCH_NAME = 'main' // Cambia a 'master' o el nombre de tu rama si es necesario
     }
 
     stages {
         stage('Clonar Repositorio') {
             steps {
-                // Clonar el repositorio
-                git url: 'https://github.com/Luisop05/Microservices.git' 
+                // Clonar el repositorio en la rama especificada
+                git url: 'https://github.com/Luisop05/Microservices.git', branch: "${BRANCH_NAME}"
             }
         }
 
@@ -59,4 +60,3 @@ pipeline {
         }
     }
 }
-
