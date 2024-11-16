@@ -9,6 +9,9 @@ services:
       - restaurant-net
     depends_on:
       - inventario-api
+    # Agregar volumen para asegurarse de que se puedan ejecutar las pruebas
+    volumes:
+      - ./pedidos_api/tests:/app/tests
 
   inventario-api:
     build: ./inventario_api
@@ -16,6 +19,9 @@ services:
       - "8001:8001"
     networks:
       - restaurant-net
+    # Agregar volumen para asegurarse de que se puedan ejecutar las pruebas
+    volumes:
+      - ./inventario_api/tests:/app/tests
 
 networks:
   restaurant-net:
