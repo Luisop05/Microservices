@@ -1,6 +1,11 @@
 pipeline {
     agent any
 
+    environment {
+        // Define any environment variables necessary for your Docker setup or tests
+        DOCKER_COMPOSE_FILE = 'docker-compose.yml'
+    }
+
     stages {
         stage('Clonar Repositorio') {
             steps {
@@ -12,12 +17,9 @@ pipeline {
         stage('Construir Microservicios') {
             steps {
                 script {
-                    // Cambiar al directorio correspondiente, si es necesario:
-                    // (Asegúrate de que estos directorios existan en tu repositorio)
-                    dir('Microservices') { // Cambia 'Microservices' a la carpeta que corresponde si es diferente
-                        // Construir los microservicios usando docker-compose
-                        sh 'docker-compose build'
-                    }
+                    echo 'Construyendo los microservicios...'
+                    // Asegúrate de que el Dockerfile esté en la carpeta donde se ejecuta el docker-compose
+                    sh 'docker-compose -f $DOCKER_COMPOSE_FILE build'
                 }
             }
         }
@@ -25,14 +27,11 @@ pipeline {
         stage('Ejecutar Pruebas') {
             steps {
                 script {
-                    // Cambiar al directorio correspondiente para las pruebas
-                    dir('Microservices') { // Cambia 'Microservices' al directorio correcto si es necesario
-                        // Ejecutar pruebas para pedidos-api
-                        sh 'docker-compose run pedidos-api python -m unittest discover -s tests'
-
-                        // Ejecutar pruebas para inventario-api
-                        sh 'docker-compose run inventario-api python -m unittest discover -s tests'
-                    }
+                    echo 'Ejecutando pruebas...'
+                    // Ejecutar pruebas para pedidos-api
+                    sh 'docker-compose -f $DOCKER_COMPOSE_FILE run pedidos-api python -m unittest discover -s tests'
+                    // Ejecutar pruebas para inventario-api
+                    sh 'docker-compose -f $DOCKER_COMPOSE_FILE run inventario-api python -m unittest discover -s tests'
                 }
             }
         }
@@ -40,11 +39,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    // Cambiar al directorio correspondiente para desplegar
-                    dir('Microservices') { // Cambia 'Microservices' al directorio correcto si es necesario
-                        // Iniciar los servicios en segundo plano
-                        sh 'docker-compose up -d'
-                    }
+                    echo 'Iniciando los servicios...'
+                    // Iniciar los servicios
+                    sh 'docker-compose -f $DOCKER_COMPOSE_FILE up -d'
                 }
             }
         }
@@ -57,6 +54,12 @@ pipeline {
 
         failure {
             echo 'El pipeline ha fallado.'
+        }
+
+        always {
+            // Esta sección se ejecutará al final sin importar si el pipeline tuvo éxito o falló
+            echo 'Limpiando los recursos...'
+            // Aquí puedes agregar comandos para limpiar si es necesario
         }
     }
 }
