@@ -57,10 +57,6 @@ pipeline {
         failure {
             echo 'El pipeline ha fallado.'
         }
-        always {
-            echo 'Finalizando el pipeline, limpiando recursos...'
-            // Acciones de limpieza opcionales, por ejemplo, detener los servicios
-            sh "docker-compose -f ${DOCKER_COMPOSE_FILE} down || true" // Asegura que el comando no falle si no hay servicios en ejecución
-        }
+        
     }
 }
