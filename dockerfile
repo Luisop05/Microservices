@@ -23,7 +23,7 @@ RUN curl -L "https://github.com/docker/compose/releases/latest/download/docker-c
     chmod +x /usr/local/bin/docker-compose
 
 # Verificar si el grupo docker ya existe antes de agregar al usuario jenkins
-RUN if ! getent group docker; then groupadd docker; fi && \
+RUN groupadd docker || true && \
     usermod -aG docker jenkins
 
 # Volver al usuario jenkins
