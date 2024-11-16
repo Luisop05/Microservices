@@ -1,22 +1,17 @@
 FROM jenkins/jenkins:lts
 
+# Cambiar a root para realizar la instalación
 USER root
 
-# Actualizar el sistema e instalar dependencias
+# Actualizar el repositorio y las dependencias, y preparar la instalación de Docker
 RUN apt-get update && apt-get install -y \
     apt-transport-https \
     ca-certificates \
     curl \
-    software-properties-common \
-    wget && \
-    rm -rf /var/lib/apt/lists/*
-
-# Agregar la clave GPG y el repositorio de Docker
-RUN curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian bullseye stable"
-
-# Actualizar de nuevo el repositorio e instalar Docker y Docker Compose
-RUN apt-get update && apt-get install -y \
+    software-properties-common && \
+    curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
+    echo "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" > /etc/apt/sources.list.d/docker.list && \
+    apt-get update && apt-get install -y \
     docker-ce \
     docker-ce-cli \
     containerd.io \
@@ -24,4 +19,5 @@ RUN apt-get update && apt-get install -y \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
+# Volver al usuario jenkins
 USER jenkins
