@@ -3,8 +3,11 @@ FROM jenkins/jenkins:lts
 # Instalar Docker
 USER root
 RUN apt-get update && \
-    apt-get install -y docker.io && \
-    apt-get install -y docker-compose && \
+    apt-get install -y apt-transport-https ca-certificates curl software-properties-common && \
+    curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add - && \
+    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debian $(lsb_release -cs) stable" && \
+    apt-get update && \
+    apt-get install -y docker-ce docker-ce-cli containerd.io docker-compose && \
     apt-get clean
 
 USER jenkins
