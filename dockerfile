@@ -1,4 +1,4 @@
-ROM jenkins/jenkins:lts
+FROM jenkins/jenkins:lts
 
 # Cambiar a usuario root para realizar la instalación
 USER root
