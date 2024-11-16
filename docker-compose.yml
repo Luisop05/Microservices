@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   pedidos-api:
     build: ./pedidos_api
