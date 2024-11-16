@@ -1,0 +1,62 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clonar Repositorio') {
+            steps {
+                // Clonar el repositorio
+                git url: 'https://github.com/Luisop05/Microservices.git' 
+            }
+        }
+
+        stage('Construir Microservicios') {
+            steps {
+                script {
+                    // Cambiar al directorio correspondiente, si es necesario:
+                    // (Asegúrate de que estos directorios existan en tu repositorio)
+                    dir('Microservices') { // Cambia 'Microservices' a la carpeta que corresponde si es diferente
+                        // Construir los microservicios usando docker-compose
+                        sh 'docker-compose build'
+                    }
+                }
+            }
+        }
+
+        stage('Ejecutar Pruebas') {
+            steps {
+                script {
+                    // Cambiar al directorio correspondiente para las pruebas
+                    dir('Microservices') { // Cambia 'Microservices' al directorio correcto si es necesario
+                        // Ejecutar pruebas para pedidos-api
+                        sh 'docker-compose run pedidos-api python -m unittest discover -s tests'
+
+                        // Ejecutar pruebas para inventario-api
+                        sh 'docker-compose run inventario-api python -m unittest discover -s tests'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                script {
+                    // Cambiar al directorio correspondiente para desplegar
+                    dir('Microservices') { // Cambia 'Microservices' al directorio correcto si es necesario
+                        // Iniciar los servicios en segundo plano
+                        sh 'docker-compose up -d'
+                    }
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline ejecutado con éxito!'
+        }
+
+        failure {
+            echo 'El pipeline ha fallado.'
+        }
+    }
+}
