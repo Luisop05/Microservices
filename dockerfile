@@ -22,8 +22,9 @@ RUN curl -fsSL https://get.docker.com -o get-docker.sh && \
 RUN curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose && \
     chmod +x /usr/local/bin/docker-compose
 
-# Agregar el usuario jenkins al grupo docker
-RUN groupadd docker && usermod -aG docker jenkins
+# Verificar si el grupo docker ya existe antes de agregar al usuario jenkins
+RUN if ! getent group docker; then groupadd docker; fi && \
+    usermod -aG docker jenkins
 
 # Volver al usuario jenkins
-USER jenkinsß
+USER jenkins
