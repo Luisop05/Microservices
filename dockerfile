@@ -23,7 +23,7 @@ RUN curl -L "https://github.com/docker/compose/releases/latest/download/docker-c
     chmod +x /usr/local/bin/docker-compose
 
 # Agregar el usuario jenkins al grupo docker
-RUN usermod -aG docker jenkins
+RUN groupadd docker && usermod -aG docker jenkins
 
 # Volver al usuario jenkins
-USER jenkins
+USER jenkinsß
