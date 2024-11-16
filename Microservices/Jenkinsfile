@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Define any environment variables necessary for your Docker setup or tests
+        // Define environment variables if necessary
         DOCKER_COMPOSE_FILE = 'docker-compose.yml'
     }
 
@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     echo 'Construyendo los microservicios...'
-                    // Asegúrate de que el Dockerfile esté en la carpeta donde se ejecuta el docker-compose
+                    // Construir imágenes de Docker
                     sh 'docker-compose -f $DOCKER_COMPOSE_FILE build'
                 }
             }
@@ -51,15 +51,12 @@ pipeline {
         success {
             echo 'Pipeline ejecutado con éxito!'
         }
-
         failure {
             echo 'El pipeline ha fallado.'
         }
-
         always {
-            // Esta sección se ejecutará al final sin importar si el pipeline tuvo éxito o falló
             echo 'Limpiando los recursos...'
-            // Aquí puedes agregar comandos para limpiar si es necesario
         }
     }
 }
+
