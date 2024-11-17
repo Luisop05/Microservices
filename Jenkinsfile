@@ -44,7 +44,7 @@ pipeline {
                 script {
                     echo 'Iniciando los servicios...'
                     // Iniciar los servicios en segundo plano
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --remove-orphans"
                 }
             }
         }
