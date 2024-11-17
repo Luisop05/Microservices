@@ -1,4 +1,18 @@
 services:
+  jenkins:
+    build: .  # Asumiendo que el Dockerfile de Jenkins está en el mismo directorio
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+      - .:/workspace  # Monta el directorio actual para acceso al docker-compose.yml
+    group_add:
+      - ${DOCKER_GROUP_ID:-999}
+    networks:
+      - restaurant-net
+
   pedidos-api:
     build: ./pedidos_api
     ports:
@@ -7,7 +21,6 @@ services:
       - restaurant-net
     depends_on:
       - inventario-api
-    # Agregar volumen para asegurarse de que se puedan ejecutar las pruebas
     volumes:
       - ./pedidos_api/tests:/app/tests
 
@@ -17,10 +30,12 @@ services:
       - "8001:8001"
     networks:
       - restaurant-net
-    # Agregar volumen para asegurarse de que se puedan ejecutar las pruebas
     volumes:
       - ./inventario_api/tests:/app/tests
 
 networks:
   restaurant-net:
     driver: bridge
+
+volumes:
+  jenkins_home:
