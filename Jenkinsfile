@@ -13,18 +13,7 @@ pipeline {
             steps {
                 // Instalamos Docker y Docker Compose si no están instalados
                 script {
-                    // Instalación de Docker (si no está instalado en el agente)
-                    sh '''
-                        if ! command -v docker &> /dev/null
-                        then
-                            echo "Docker no encontrado, instalando Docker..."
-                            curl -fsSL https://get.docker.com -o get-docker.sh
-                            sudo sh get-docker.sh
-                        else
-                            echo "Docker ya está instalado"
-                        fi
-                    '''
-                    // Instalación de Docker Compose (si no está instalado)
+                   // Instalación de Docker Compose (si no está instalado)
                     sh '''
                         if ! command -v docker-compose &> /dev/null
                         then
