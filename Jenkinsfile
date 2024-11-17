@@ -43,8 +43,11 @@ pipeline {
             steps {
                 script {
                     echo 'Bajando los contenedores existentes...'
-                    // Detener y eliminar los contenedores que están corriendo
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} down --remove-orphans"
+                    // Detener y eliminar los contenedores específicos
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} stop pedidos-api"
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} rm -f pedidos-api"
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} stop inventario-api"
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} rm -f inventario-api"
                 }
             }
         }
@@ -52,9 +55,9 @@ pipeline {
         stage('Deploy') {
             steps {
                 script {
-                    echo 'Iniciando los servicios...'
-                    // Iniciar los servicios en segundo plano
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
+                    echo 'Iniciando solo los servicios detenidos...'
+                    // Iniciar solo los servicios pedidos-api e inventario-api en segundo plano
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d pedidos-api inventario-api"
                 }
             }
         }
