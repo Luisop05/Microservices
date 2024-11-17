@@ -8,8 +8,7 @@ services:
       - jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
       - .:/workspace
-    group_add:
-      - "999"  # ID típico para el grupo docker, pero puede variar
+    privileged: true
     networks:
       - restaurant-net
 

@@ -24,11 +24,10 @@ RUN curl -L "https://github.com/docker/compose/releases/latest/download/docker-c
 
 # Crear grupo docker y añadir usuario jenkins
 RUN groupadd -f docker && \
-    usermod -aG docker jenkins && \
-    chown root:docker /var/run/docker.sock
+    usermod -aG docker jenkins
 
-# Configurar permisos correctos para el socket de Docker
-RUN chmod 666 /var/run/docker.sock
+# Script de inicialización
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
 
-# Volver al usuario jenkins
-USER jenkins
+ENTRYPOINT ["/docker-entrypoint.sh"]
