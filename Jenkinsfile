@@ -22,7 +22,7 @@ pipeline {
                 script {
                     echo 'Construyendo los microservicios...'
                     // Construir las imágenes de Docker usando docker-compose
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} build pedidos-api inventario-api"
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --remove-orphans pedidos-api inventario-api"
                 }
             }
         }
