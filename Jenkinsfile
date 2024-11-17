@@ -39,15 +39,7 @@ pipeline {
             }
         }
 
-        stage('Bajar Contenedores') {
-            steps {
-                script {
-                    echo 'Bajando los contenedores existentes...'
-                      // Detener y eliminar los contenedores específicos
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} down"
-                }
-            }
-        }
+    
 
         stage('Deploy') {
             steps {
