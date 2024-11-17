@@ -4,10 +4,10 @@ pipeline {
     environment {
         DOCKER_COMPOSE_FILE = 'docker-compose.yml' // Archivo de configuración de Docker Compose
         GIT_REPO_URL = 'https://github.com/Luisop05/Microservices.git'
-        GIT_BRANCH = 'main' 
+        GIT_BRANCH = 'main' // Cambia esto por la rama que deseas clonar, si es diferente
     }
 
-    stages {      
+    stages {
         stage('Clonar Repositorio') {
             steps {
                 script {
@@ -22,7 +22,7 @@ pipeline {
                 script {
                     echo 'Construyendo los microservicios...'
                     // Construir las imágenes de Docker usando docker-compose
-                    sh "docker-compose up"
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} build pedidos-api inventario-api"
                 }
             }
         }
@@ -38,6 +38,19 @@ pipeline {
                 }
             }
         }
+
+        //stage('Bajar Contenedores') {
+           // steps {
+              //  script {
+               //     echo 'Bajando los contenedores existentes...'
+               //     // Detener y eliminar los contenedores específicos
+                 //   sh "docker-compose -f ${DOCKER_COMPOSE_FILE} stop pedidos-api"
+               //     sh "docker-compose -f ${DOCKER_COMPOSE_FILE} rm -f pedidos-api"
+                //    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} stop inventario-api"
+               //     sh "docker-compose -f ${DOCKER_COMPOSE_FILE} rm -f inventario-api"
+              //  }
+          //  }
+     //   }
 
         stage('Deploy') {
             steps {
