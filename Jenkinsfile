@@ -39,14 +39,12 @@ pipeline {
             }
         }
 
-    
-
         stage('Deploy') {
             steps {
                 script {
                     echo 'Iniciando solo los servicios detenidos...'
                     // Iniciar solo los servicios pedidos-api e inventario-api en segundo plano
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d pedidos-api inventario-api"
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --remove-orphans pedidos-api inventario-api"
                 }
             }
         }
