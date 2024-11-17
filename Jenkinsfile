@@ -7,26 +7,7 @@ pipeline {
         GIT_BRANCH = 'main' // Cambia esto por la rama que deseas clonar, si es diferente
     }
 
-    stages {
-
-        stage('Install Docker & Docker Compose') {
-            steps {
-                // Instalamos Docker y Docker Compose si no están instalados
-                script {
-                   // Instalación de Docker Compose (si no está instalado)
-                    sh '''
-                        if ! command -v docker-compose &> /dev/null
-                        then
-                            echo "Docker Compose no encontrado, instalando Docker Compose..."
-                            sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-                            sudo chmod +x /usr/local/bin/docker-compose
-                        else
-                            echo "Docker Compose ya está instalado"
-                        fi
-                    '''
-                }
-            }
-        }
+    stages {      
         stage('Clonar Repositorio') {
             steps {
                 script {
@@ -41,7 +22,7 @@ pipeline {
                 script {
                     echo 'Construyendo los microservicios...'
                     // Construir las imágenes de Docker usando docker-compose
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} build"
+                    sh "docker-compose up"
                 }
             }
         }
