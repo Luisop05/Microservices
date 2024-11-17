@@ -1,5 +1,7 @@
 # Sistema de Gestión de Restaurante
 
+prueba jenkins
+
 Este proyecto implementa un sistema de gestión de restaurante distribuido en dos microservicios. Cada microservicio es responsable de una función específica: gestión de pedidos e inventario.
 
 - **API de Pedidos** (Puerto 8000): Maneja los pedidos realizados por los clientes.
