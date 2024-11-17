@@ -39,18 +39,18 @@ pipeline {
             }
         }
 
-        stage('Bajar Contenedores') {
-            steps {
-                script {
-                    echo 'Bajando los contenedores existentes...'
-                    // Detener y eliminar los contenedores específicos
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} stop pedidos-api"
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} rm -f pedidos-api"
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} stop inventario-api"
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} rm -f inventario-api"
-                }
-            }
-        }
+        //stage('Bajar Contenedores') {
+           // steps {
+              //  script {
+               //     echo 'Bajando los contenedores existentes...'
+               //     // Detener y eliminar los contenedores específicos
+                 //   sh "docker-compose -f ${DOCKER_COMPOSE_FILE} stop pedidos-api"
+               //     sh "docker-compose -f ${DOCKER_COMPOSE_FILE} rm -f pedidos-api"
+                //    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} stop inventario-api"
+               //     sh "docker-compose -f ${DOCKER_COMPOSE_FILE} rm -f inventario-api"
+              //  }
+          //  }
+     //   }
 
         stage('Deploy') {
             steps {
