@@ -8,6 +8,36 @@ pipeline {
     }
 
     stages {
+
+        stage('Install Docker & Docker Compose') {
+            steps {
+                // Instalamos Docker y Docker Compose si no están instalados
+                script {
+                    // Instalación de Docker (si no está instalado en el agente)
+                    sh '''
+                        if ! command -v docker &> /dev/null
+                        then
+                            echo "Docker no encontrado, instalando Docker..."
+                            curl -fsSL https://get.docker.com -o get-docker.sh
+                            sudo sh get-docker.sh
+                        else
+                            echo "Docker ya está instalado"
+                        fi
+                    '''
+                    // Instalación de Docker Compose (si no está instalado)
+                    sh '''
+                        if ! command -v docker-compose &> /dev/null
+                        then
+                            echo "Docker Compose no encontrado, instalando Docker Compose..."
+                            sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+                            sudo chmod +x /usr/local/bin/docker-compose
+                        else
+                            echo "Docker Compose ya está instalado"
+                        fi
+                    '''
+                }
+            }
+        }
         stage('Clonar Repositorio') {
             steps {
                 script {
