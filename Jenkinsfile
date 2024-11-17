@@ -39,12 +39,22 @@ pipeline {
             }
         }
 
+        stage('Bajar Contenedores') {
+            steps {
+                script {
+                    echo 'Bajando los contenedores existentes...'
+                    // Detener y eliminar los contenedores que están corriendo
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} down --remove-orphans"
+                }
+            }
+        }
+
         stage('Deploy') {
             steps {
                 script {
                     echo 'Iniciando los servicios...'
                     // Iniciar los servicios en segundo plano
-                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d --remove-orphans"
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d"
                 }
             }
         }
@@ -57,6 +67,5 @@ pipeline {
         failure {
             echo 'El pipeline ha fallado.'
         }
-        
     }
 }
