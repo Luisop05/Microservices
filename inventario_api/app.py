@@ -3,6 +3,7 @@ from pydantic import BaseModel
 from typing import List, Optional
 import json
 from pathlib import Path
+import sentry_sdk
 
 class Producto(BaseModel):
     id: int
@@ -14,6 +15,10 @@ class Producto(BaseModel):
 
 class ActualizarStock(BaseModel):
     cantidad: int
+
+sentry_sdk.init(
+    dsn="https://dba308987dcb11ef76e61234e2717584@o4508393627254784.ingest.us.sentry.io/4508393928720384",
+)
 
 app = FastAPI(
     title="API de Inventario - Restaurante",
@@ -51,6 +56,11 @@ PRODUCTOS_INICIALES = [
 
 # Simulamos una base de datos con un diccionario
 productos = {p["id"]: p for p in PRODUCTOS_INICIALES}
+
+@app.get("/sentry-debug")
+async def trigger_error():
+    division_by_zero = 1 / 0
+
 
 @app.get("/productos/", 
          response_model=List[Producto],
