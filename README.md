@@ -1,3 +1,4 @@
+prueba
 # 🍽️ Sistema de Gestión de Restaurante
 
 Este proyecto implementa un sistema de gestión de restaurante distribuido en dos microservicios. Cada microservicio es responsable de una función específica: gestión de pedidos e inventario.
