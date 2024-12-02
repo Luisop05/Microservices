@@ -1,9 +1,10 @@
 from fastapi import FastAPI, HTTPException
+import sentry_sdk
 from pydantic import BaseModel
 from typing import List, Optional
 import json
 from pathlib import Path
-import sentry_sdk
+
 
 class Producto(BaseModel):
     id: int
@@ -18,6 +19,8 @@ class ActualizarStock(BaseModel):
 
 sentry_sdk.init(
     dsn="https://dba308987dcb11ef76e61234e2717584@o4508393627254784.ingest.us.sentry.io/4508393928720384",
+    traces_sample_rate=1.0,  
+    profiles_sample_rate=1.0,
 )
 
 app = FastAPI(
@@ -68,6 +71,9 @@ async def trigger_error():
          summary="Listar todos los productos",
          description="Retorna la lista completa de productos en el inventario")
 async def listar_productos():
+    with sentry_sdk.start_transaction(name="listarproducto"):
+        import time
+        time.sleep(2)
     return list(productos.values())
 
 @app.get("/productos/{producto_id}", 
