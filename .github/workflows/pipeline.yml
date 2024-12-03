@@ -27,4 +27,4 @@ jobs:
           path: ./proyect
       - name: Check-files
         run: |
-          ls -la
+          ls -la proyect/
