@@ -30,7 +30,7 @@ jobs:
           ls -la project/
       - name: Execute Unit Test (inventario api)
         run: |
-          cd inventario_api
+          cd project/inventario_api
           pip3 install -r requirements.txt
           cd ..
           pytest inventario_api/tests/test_app.py      
