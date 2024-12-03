@@ -1,6 +1,6 @@
 import pytest
 from fastapi.testclient import TestClient
-from app import app, EstadoPedido
+from pedidos_api.app import app, EstadoPedido   
 
 client = TestClient(app)
 
