@@ -1,0 +1,30 @@
+name: CI/CD
+on:
+  workflow_dispatch:
+    inputs:
+      jenkins_url:
+        description: "URL Jenkins service"
+        required: true
+      user:
+        description: "Jenkins username"
+        required: true
+      password:
+        description: "Jenkins username password"
+        required: true
+
+jobs:
+  set-workflow:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read 
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ''
+          persist-credentials: false
+          path: ./proyect
+      - name: Check-files
+        run: |
+          ls -la
