@@ -11,12 +11,8 @@ pipeline {
         stage('Clonar Repositorio') {
             steps {
                 script {
-                    // En Windows, usa checkout de Jenkins o git.exe
-                    checkout([
-                        $class: 'GitSCM', 
-                        branches: [[name: "${GIT_BRANCH}"]], 
-                        userRemoteConfigs: [[url: "${GIT_REPO_URL}"]]
-                    ])
+                    // Clona el repositorio especificando la rama
+                    git branch: "${GIT_BRANCH}", url: "${GIT_REPO_URL}"
                 }
             }
         }
@@ -25,8 +21,8 @@ pipeline {
             steps {
                 script {
                     echo 'Construyendo los microservicios...'
-                    // Usa docker-compose en Windows
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} build pedidos-api inventario-api"
+                    // Construir las imágenes de Docker usando docker-compose
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} build pedidos-api inventario-api"
                 }
             }
         }
@@ -35,9 +31,10 @@ pipeline {
             steps {
                 script {
                     echo 'Ejecutando pruebas...'
-                    // Usa bat en lugar de sh para comandos de Windows
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} run pedidos-api python -m unittest discover -s tests"
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} run inventario-api python -m unittest discover -s tests"
+                    // Ejecutar pruebas para pedidos-api
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} run pedidos-api python -m unittest discover -s tests"
+                    // Ejecutar pruebas para inventario-api
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} run inventario-api python -m unittest discover -s tests"
                 }
             }
         }
@@ -46,11 +43,11 @@ pipeline {
             steps {
                 script {
                     echo 'Bajando los contenedores existentes...'
-                    // Comandos de Docker Compose para Windows
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} stop pedidos-api"
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} rm -f pedidos-api"
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} stop inventario-api"
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} rm -f inventario-api"
+                      // Detener y eliminar los contenedores específicos
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} stop pedidos-api"
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} rm -f pedidos-api"
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} stop inventario-api"
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} rm -f inventario-api"
                 }
             }
         }
@@ -59,8 +56,8 @@ pipeline {
             steps {
                 script {
                     echo 'Iniciando solo los servicios detenidos...'
-                    // Iniciar servicios en Windows
-                    bat "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d pedidos-api inventario-api"
+                    // Iniciar solo los servicios pedidos-api e inventario-api en segundo plano
+                    sh "docker-compose -f ${DOCKER_COMPOSE_FILE} up -d pedidos-api inventario-api"
                 }
             }
         }
