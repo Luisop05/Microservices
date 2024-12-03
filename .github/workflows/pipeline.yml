@@ -30,6 +30,7 @@ jobs:
           ls -la project/
       - name: Execute Unit Test (inventario api)
         run: |
+          export PYTHONPATH="/home/runner/work/Microservices/Microservices/project"
           cd project/inventario_api
           pip3 install -r requirements.txt
           cd ..
