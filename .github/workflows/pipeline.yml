@@ -1,4 +1,4 @@
-name: CI/CD
+name: Unit-Test
 on:
   workflow_dispatch:
     inputs:
@@ -30,4 +30,11 @@ jobs:
           cd project/inventario_api
           pip3 install -r requirements.txt
           cd ..
-          pytest inventario_api/tests/test_app.py      
+          pytest inventario_api/tests/test_app.py
+      - name: Execute Unit Test (pedidos_api)
+        run: |
+          export PYTHONPATH="/home/runner/work/Microservices/Microservices/project"
+          cd project/inventario_api
+          pip3 install -r requirements.txt
+          cd ..
+          pytest inventario_api/tests/test_app.py    
