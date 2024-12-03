@@ -2,14 +2,10 @@ name: CI/CD
 on:
   workflow_dispatch:
     inputs:
-      jenkins_url:
-        description: "URL Jenkins service"
-        required: true
-      user:
-        description: "Jenkins username"
-        required: true
-      password:
-        description: "Jenkins username password"
+      Execute-Unit-Test:
+        description: "Execute Unit Test?"
+        type: boolean
+        default: false
         required: true
 
 jobs:
