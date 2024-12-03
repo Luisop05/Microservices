@@ -1,5 +1,3 @@
-version: '3.8'  # Define la versión de Docker Compose
-
 services:
   jenkins:
     build: .
