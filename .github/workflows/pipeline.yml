@@ -24,7 +24,7 @@ jobs:
         with:
           ref: ''
           persist-credentials: false
-          path: ./proyect
+          path: ./project
       - name: Check-files
         run: |
-          ls -la proyect/
+          ls -la project/
