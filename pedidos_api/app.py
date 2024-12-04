@@ -63,7 +63,7 @@ async def crear_pedido(pedido: Pedido):
             # Verificar inventario para cada item
             for item in pedido.items:
                 response = requests.get(
-                    f"http://172.23.133.111:8001/productos/{item.producto_id}"
+                    f"http://inventario-api:8001/productos/{item.producto_id}"
                 )
                 if response.status_code != 200:
                     raise HTTPException(status_code=400, 
@@ -78,7 +78,7 @@ async def crear_pedido(pedido: Pedido):
                 
                 # Actualizar inventario
                 requests.post(
-                    f"http://172.23.133.111:8001/productos/{item.producto_id}/reducir",
+                    f"http://inventario-api:8001/productos/{item.producto_id}/reducir",
                     json={"cantidad": item.cantidad}
                 )
             
@@ -91,7 +91,7 @@ async def crear_pedido(pedido: Pedido):
             total = 0
             for item in pedido.items:
                 response = requests.get(
-                    f"http://172.23.133.111:8001/productos/{item.producto_id}"
+                    f"http://inventario-api:8001/productos/{item.producto_id}"
                 )
                 producto = response.json()
                 total += producto["precio"] * item.cantidad
